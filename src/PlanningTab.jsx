@@ -53,7 +53,6 @@ function PlanningTab({ empleados, turnos, setTurnos, ausencias, notas, setNotas,
   const [notaGlobalTexto, setNotaGlobalTexto] = useState("");
   const [verSemana, setVerSemana] = useState(false);
   
-  
   const semanaISO = getISOWeekNumber(planningFecha);
 
  // 3) fechaActual, inicioSemana, finSemana (tal como ya tenías)
@@ -107,6 +106,13 @@ function handleAddNotaDia() {
 
   setNotaTexto("");
 }
+
+function handleDeleteNotaDia(id) {
+  setNotas(prev =>
+    Array.isArray(prev) ? prev.filter((n) => n.id !== id) : []
+  );
+}
+
 
 function handleAddNotaGlobalDia() {
   if (!notaGlobalTexto.trim()) return;
@@ -911,9 +917,24 @@ function exportarVistaSemanalACSV() {
               background: "#fff8e1",
               border: "1px solid #ffecb3",
               color: "#795548",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
             }}
           >
-            Nota: {n.texto}
+            <span>Nota: {n.texto}</span>
+            <button
+              onClick={() => handleDeleteNotaDia(n.id)}
+              style={{
+                fontSize: 10,
+                padding: "0 4px",
+                borderRadius: 2,
+                border: "1px solid #ccc",
+                cursor: "pointer",
+              }}
+            >
+              ✕
+            </button>
           </div>
   ))}
 </div>
